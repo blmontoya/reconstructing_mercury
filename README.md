@@ -7,5 +7,7 @@ The recent rise of neural networks in image reconstruction has allowed researche
 This research extends beyond the scope of planetary science as well: fields such as archeology require more research into image reconstruction techniques to better understand how worn ancient texts would have looked and what message they would contain. Medical image reconstruction allows clinicians to better diagnose and treat diseases, converting raw data into images that can expose internal structures and shed light on biochemical functions. Similar to how it is crucial to look at the raw data and low degree spherical harmonics for Mercury’s image reconstruction, these fields require more than enhancing an image because they incorporate more factors beyond just the information on screen. Archeology requires knowing how an ancient artifact degraded over time and medical image reconstruction of proteins is helped by knowing how proteins could fold and interact with itself.
 
 **Inspired By This Paper:** https://www.mdpi.com/2072-4292/12/14/2293
+
 **MESSENGER Overview:** https://science.nasa.gov/mission/messenger/
+
 **Planetary Data (Spherical Harmonic Data):** pds-geosciences.wustl.edu/dataserv/gravity_models.htm
