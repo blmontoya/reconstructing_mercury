@@ -1,7 +1,6 @@
 # Reconstructing Mercury's Southern Hemisphere Using CNNs
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-![Example Image 1](readme_imgs/mercury_grav_fiield_preprocessed.jpg)
+![Title Img](readme_imgs/mercury_grav_fiield_preprocessed.jpg)
 
 ## Introduction:
 
