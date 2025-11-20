@@ -1,5 +1,8 @@
 # Reconstructing Mercury's Southern Hemisphere Using CNNs
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+![Example Image 1](readme_imgs/mercury_grav_field_preprocessed.jpg)
+
 ## Introduction:
 
 The recent rise of neural networks in image reconstruction has allowed researchers to contextualize noisy data and technical artifacts. Yet, despite the growing use of deep learning as a robust tool for scientific analyses, its use in planetary science research remains scarce. This project aims to explore various image reconstruction techniques on the planetary data of Mercury. Planetary data on Mercury’s southern hemisphere is low quality due to the near-polar eccentric orbit of the MESSENGER (Mercury Surface, Space Environment, Geochemistry, and Ranging) satellite. By exploring how convolutional neural networks can provide reconstructed models of Mercury’s southern hemisphere, researchers can better understand how to apply convolutional neural networks to observe other planetary bodies. This project proposes that by using examples of topographic maps and gravitational fields from other celestial bodies, such as the moon, Mercury’s raw data collected by MESSENGER in the southern hemisphere can be reconstructed.
