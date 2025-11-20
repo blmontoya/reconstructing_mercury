@@ -15,3 +15,9 @@ This research extends beyond the scope of planetary science as well: fields such
 **MESSENGER Overview:** https://science.nasa.gov/mission/messenger/
 
 **Planetary Data (Spherical Harmonic Data):** pds-geosciences.wustl.edu/dataserv/gravity_models.htm
+
+## Getting Started:
+
+## Methodology:
+
+## Data:
