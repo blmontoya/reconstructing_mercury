@@ -3,6 +3,7 @@
 <p align="center">
   <img width="800" height="500" src=readme_imgs/mercury_gravity_field.png>
 </p>
+<p style="text-align:center"> Fig. 1: Mercury's gravitational field pre-processing </p>
 
 ## Introduction:
 
