@@ -154,7 +154,6 @@ class GravityReconstructionNetwork(keras.Model):
         })
         return config
 
-
 class DEMRefiningNetwork(keras.Model):
     """
     DEM Refining Network (for future use with DEM data)
