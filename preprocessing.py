@@ -58,12 +58,52 @@ def truncate_coeffs(C, S, l_trunc):
     return C[:l_trunc+1, :l_trunc+1].copy(), S[:l_trunc+1, :l_trunc+1].copy()
 
 
-def make_grid_from_coeffs(C, S, grid_type="DH2"):
-    """Convert spherical harmonic coefficient matrices into a numpy grid"""
-    coeffs = pysh.SHCoeffs.from_array(np.array([C, S]))
-    grid = coeffs.expand(grid=grid_type)
-    return grid.to_array()
-
+def make_grid_from_coeffs(C, S, grid_type="DH2", gm=4902.8005, r_ref=1737.4):
+    """
+    Convert spherical harmonic coefficients to gravity anomaly field
+    
+    Args:
+        C, S: Coefficient matrices (dimensionless, fully normalized)
+        grid_type: Grid type (DH2)
+        gm: Gravitational parameter (km^3/s^2) - Moon: 4902.8005
+        r_ref: Reference radius (km) - Moon: 1737.4
+    """
+    lmax = C.shape[0] - 1
+    
+    # Create coefficients object - coefficients are already normalized
+    coeffs = pysh.SHCoeffs.from_array(
+        np.array([C, S]),
+        normalization='4pi',
+        csphase=1,
+        units='m'
+    )
+    
+    # Convert to gravity acceleration by taking radial derivative
+    # For gravity: g = -(l+1) * GM/r^2 * C_lm * Y_lm
+    # We need to scale by (l+1) for each degree
+    C_scaled = C.copy()
+    S_scaled = S.copy()
+    
+    for l in range(lmax + 1):
+        factor = (l + 1)  # Derivative factor
+        C_scaled[l, :] *= factor
+        S_scaled[l, :] *= factor
+    
+    # Create new coeffs with scaled values
+    coeffs_gravity = pysh.SHCoeffs.from_array(
+        np.array([C_scaled, S_scaled]),
+        normalization='4pi',
+        csphase=1
+    )
+    
+    # Expand to spatial grid
+    grid = coeffs_gravity.expand(grid=grid_type, extend=False)
+    
+    # Scale to physical units: mGal
+    # GM in m^3/s^2, r_ref in m, result in m/s^2, convert to mGal (10^5 mGal = 1 m/s^2)
+    gravity_grid = grid.to_array() * (gm * 1e9) / ((r_ref * 1e3) ** 2) * 1e5
+    
+    return gravity_grid
 
 def process_body(body_name, sha_file_path, max_degree, low_degrees, output_dir="data/processed"):
     """
@@ -131,8 +171,8 @@ if __name__ == "__main__":
     print("="*80)
     
     # Configuration
-    MAX_DEGREE = 200
-    LOW_DEGREES = [25, 50, 100]
+    MAX_DEGREE = 600
+    LOW_DEGREES = [25, 50, 100, 200]
     
     # Process Moon data (for training)
     # Replace this path with your actual Moon data file
