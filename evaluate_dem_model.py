@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import zoom
 import os
 from skimage.metrics import structural_similarity as ssim
+from model import GravityReconstructionNetwork, DEMRefiningNetwork
 
 
 def load_model_and_data(
@@ -20,19 +21,24 @@ def load_model_and_data(
 ):
     """
     Load trained model and test data
-
-    Args:
-        model_path: Path to saved model
-        gravity_low_path: Path to low-res gravity test data
-        gravity_high_path: Path to high-res gravity ground truth
-        dem_high_path: Path to high-res DEM (optional, for full model)
-        patch_size: Patch size for evaluation
-
-    Returns:
-        model, test_data, ground_truth, (dem_data if applicable)
     """
     print(f"\nLoading model from {model_path}...")
-    model = keras.models.load_model(model_path)
+    
+    # --- FIX STARTS HERE ---
+    # Register your custom layers/models so Keras knows what they are
+    custom_objects = {
+        'GravityReconstructionNetwork': GravityReconstructionNetwork,
+        'DEMRefiningNetwork': DEMRefiningNetwork
+    }
+    
+    try:
+        # standard loading for recent Keras versions
+        with keras.utils.custom_object_scope(custom_objects):
+            model = keras.models.load_model(model_path)
+    except:
+        # fallback for older Keras versions
+        model = keras.models.load_model(model_path, custom_objects=custom_objects)
+    # --- FIX ENDS HERE ---
 
     print(f"Loading gravity data...")
     gravity_low = np.load(gravity_low_path)
@@ -41,7 +47,7 @@ def load_model_and_data(
     # Resize if needed
     if gravity_low.shape != gravity_high.shape:
         zoom_factors = (gravity_high.shape[0] / gravity_low.shape[0],
-                       gravity_high.shape[1] / gravity_low.shape[1])
+                        gravity_high.shape[1] / gravity_low.shape[1])
         gravity_low = zoom(gravity_low, zoom_factors, order=1)
 
     dem_high = None
@@ -50,7 +56,7 @@ def load_model_and_data(
         dem_high = np.load(dem_high_path)
         if dem_high.shape != gravity_high.shape:
             zoom_factors = (gravity_high.shape[0] / dem_high.shape[0],
-                           gravity_high.shape[1] / dem_high.shape[1])
+                            gravity_high.shape[1] / dem_high.shape[1])
             dem_high = zoom(dem_high, zoom_factors, order=1)
 
     print(f"  Gravity low shape: {gravity_low.shape}")

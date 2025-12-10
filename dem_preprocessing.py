@@ -24,8 +24,17 @@ def load_tif_dem(tif_path):
     # Try rasterio first (more robust for GeoTIFFs)
     try:
         import rasterio
+        from rasterio.enums import Resampling
         with rasterio.open(tif_path) as dataset:
-            dem_array = dataset.read(1)  # Read first band
+            # Read downsampled to save RAM (factor of 16 = 2880×1440 max)
+            dem_array = dataset.read(
+                1,
+                out_shape=(
+                    dataset.height // 16,
+                    dataset.width // 16
+                ),
+                resampling=Resampling.bilinear
+            )
             metadata = {
                 'width': dataset.width,
                 'height': dataset.height,
@@ -156,7 +165,7 @@ def normalize_dem(dem_array, method='standard'):
 
 def process_lunar_dem(
     tif_path='data/train/moon_dem/Lunar_LRO_LOLA_Global_LDEM_118m_Mar2014.tif',
-    target_shapes=[360, 720, 1440, 2880],  # Corresponding to L25, L50, L100, L200
+    target_shapes=[402, 804, 1440, 2880],  # Corresponding to L25, L50, L100, L200
     output_dir='data/processed',
     visualize=True
 ):
@@ -331,7 +340,7 @@ if __name__ == "__main__":
     # 360x180 = L25, 720x360 = L50, 1440x720 = L100, 2880x1440 = L200
     processed_dems = process_lunar_dem(
         tif_path=args.tif_path,
-        target_shapes=[360, 720, 1440, 2880],
+        target_shapes=[402, 804, 1440, 2880],
         output_dir=args.output_dir,
         visualize=args.visualize
     )
