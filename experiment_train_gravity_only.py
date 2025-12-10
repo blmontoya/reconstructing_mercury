@@ -89,7 +89,7 @@ def train_moon_gravity_model(
     batch_size=32,  # Larger batch size for CPU efficiency
     initial_lr=2e-4,
     patience=20,
-    save_dir='checkpoints'
+    save_dir='checkpoints_experimental_gravity_only'
 ):
     """
     Train gravity reconstruction model on Moon data (CPU-optimized)
@@ -116,8 +116,8 @@ def train_moon_gravity_model(
     print(f"\nLoading Moon grids (L{l_low} -> L{l_high})...")
     start_time = time.time()
     
-    grid_low = np.load(f"data/processed/moon_grav_L{l_low}.npz")['grid']
-    grid_high = np.load(f"data/processed/moon_grav_L{l_high}.npz")['grid']
+    grid_low = np.load(f"data/processed/moon_grav_L{l_low}.npy")
+    grid_high = np.load(f"data/processed/moon_grav_L{l_high}.npy")
     
     print(f"  Low-res: {grid_low.shape}")
     print(f"  High-res: {grid_high.shape}")
@@ -356,7 +356,7 @@ if __name__ == "__main__":
     print("\n" + "="*80)
     print("NEXT STEPS:")
     print("="*80)
-    print("1. Check training curves: checkpoints/training_curves.png")
-    print("2. Best model saved: checkpoints/moon_gravity_model_best.h5")
-    print("3. Apply to Mercury using apply_to_mercury.py")
+    print("1. Check training curves: checkpoints_experimental_gravity_only/training_curves.png")
+    print("2. Best model saved: checkpoints_experimental_gravity_only/moon_gravity_model_best.h5")
+    print("3. Apply to Mercury using experiment_apply_gravity_only.py")
     print("="*80)

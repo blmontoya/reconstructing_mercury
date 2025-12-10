@@ -276,10 +276,13 @@ def main():
     print("="*80)
     
     # Paths
-    model_path = 'checkpoints/moon_gravity_model_best.h5'
-    norm_params_path = 'checkpoints/normalization_params.npz'
-    mercury_data_path = 'data/processed/mercury_grav_L25.npz'
-    output_dir = 'results'
+    model_path = 'checkpoints_experimental_gravity_only/moon_gravity_model_best.h5'
+    norm_params_path = 'checkpoints_experimental_gravity_only/normalization_params.npz'
+    
+    # Point to the .npy file (not .npz)
+    mercury_data_path = 'data/processed/mercury_grav_L25.npy'
+    
+    output_dir = 'results_gravity_only'
     
     os.makedirs(output_dir, exist_ok=True)
     
@@ -320,7 +323,7 @@ def main():
     
     # Load Mercury data
     print(f"\n[3/5] Loading Mercury low-resolution data (L=25)...")
-    grid_low_mercury = np.load(mercury_data_path)['grid']
+    grid_low_mercury = np.load(mercury_data_path)
     print(f"      Shape: {grid_low_mercury.shape}")
     print(f"      Range: [{np.min(grid_low_mercury):.2f}, {np.max(grid_low_mercury):.2f}] mGal")
     

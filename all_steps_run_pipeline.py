@@ -51,7 +51,7 @@ def main():
     # input("\nPress Enter to start the pipeline (or Ctrl+C to cancel)...")
 
     # --- PHASE 1: MOON PREPARATION ---
-    if not run_step("step1_preprocess_moon_grav.py", "Step 1: Process Moon Gravity Data"):
+    if not run_step("step1_preprocess_moon_gravity.py", "Step 1: Process Moon Gravity Data"):
         return
 
     if not run_step("step2_preprocess_moon_dem.py", 
@@ -72,15 +72,31 @@ def main():
 
     # --- PHASE 4: MERCURY FINE-TUNING ---
     # We fine-tune on the North Pole
+    step5_args = (
+        "--moon_model checkpoints_dem/moon_full_model_best.h5 "
+        "--mercury_grav_low data/processed/mercury_grav_L25.npy "
+        "--mercury_grav_high data/processed/mercury_grav_L50.npy "
+        "--mercury_dem_high data/processed/mercury_dem_720x360.npy "
+        "--epochs 50 --lr 1e-5"
+    )
+    
     if not run_step("step5_finetune_and_reconstruct.py", 
                     "Step 5: Fine-Tune on Mercury North",
-                    args="--epochs 50 --lr 1e-5"):
+                    args=step5_args):
         return
 
     # --- PHASE 5: FINAL RECONSTRUCTION ---
     # Apply the model to the South Pole
+    step6_args = (
+        "--model_path checkpoints_mercury/mercury_model_best.h5 "
+        "--grav_low data/processed/mercury_grav_L25.npy "
+        "--grav_high_truth data/processed/mercury_grav_L100.npy "
+        "--dem_high data/processed/mercury_dem_L200.npy"
+    )
+
     if not run_step("step6_reconstruct_mercury.py", 
-                    "Step 6: Reconstruct Mercury South Pole"):
+                    "Step 6: Reconstruct Mercury South Pole",
+                    args=step6_args):
         return
 
     print("\n" + "="*80)

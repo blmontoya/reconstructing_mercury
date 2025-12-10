@@ -148,8 +148,8 @@ def train_full_model_with_dem(
 
     if not os.path.exists(dem_file):
         print(f"\nERROR: DEM file not found: {dem_file}")
-        print("Please run dem_preprocessing.py first to generate DEM data.")
-        print("Example: python dem_preprocessing.py")
+        print("Please run step2_preprocess_moon_dem.py first to generate DEM data.")
+        print("Example: python step2_preprocess_moon_dem.py")
         return None, None
 
     dem_high = np.load(dem_file)
@@ -160,7 +160,7 @@ def train_full_model_with_dem(
     print(f"  Loading time: {time.time() - start_time:.2f}s")
 
     # Verify DEM-Gravity spatial similarity (should be > 0.96 per paper)
-    from dem_preprocessing import calculate_dem_gravity_ssim
+    from step2_preprocess_moon_dem import calculate_dem_gravity_ssim
     ssim_value = calculate_dem_gravity_ssim(dem_high, gravity_high)
 
     # CREATE PATCHES

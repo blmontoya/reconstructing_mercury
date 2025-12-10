@@ -327,20 +327,24 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Process DEM data for gravity reconstruction')
     parser.add_argument('--tif_path', type=str,
-                       default='data/train/moon_dem/Lunar_LRO_LOLA_Global_LDEM_118m_Mar2014.tif',
-                       help='Path to input DEM TIFF file')
+                        default='data/train/moon_dem/Lunar_LRO_LOLA_Global_LDEM_118m_Mar2014.tif',
+                        help='Path to input DEM TIFF file')
     parser.add_argument('--output_dir', type=str, default='data/processed',
-                       help='Output directory for processed DEMs')
+                        help='Output directory for processed DEMs')
     parser.add_argument('--visualize', action='store_true', default=True,
-                       help='Create visualization plots')
+                        help='Create visualization plots')
+    
+    # --- ADD THIS NEW ARGUMENT ---
+    parser.add_argument('--target_shapes', type=int, nargs='+', 
+                        default=[402, 804, 1440, 2880],
+                        help='List of target widths (pixels)')
 
     args = parser.parse_args()
 
-
-    # 360x180 = L25, 720x360 = L50, 1440x720 = L100, 2880x1440 = L200
+    # Pass the command line args into the function
     processed_dems = process_lunar_dem(
         tif_path=args.tif_path,
-        target_shapes=[402, 804, 1440, 2880],
+        target_shapes=args.target_shapes,  # <--- Now uses the input argument
         output_dir=args.output_dir,
         visualize=args.visualize
     )
