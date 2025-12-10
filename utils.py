@@ -16,13 +16,11 @@ def visualize_gravity_field(gravity_field, title="Gravity Field",
         cmap: Colormap to use
         vmin, vmax: Value range for colormap
     """
-    # Remove channel dimension if present
     if len(gravity_field.shape) == 3 and gravity_field.shape[-1] == 1:
         gravity_field = gravity_field[:, :, 0]
 
     fig, ax = plt.subplots(figsize=(12, 8))
 
-    # Create symmetric colormap around zero
     if vmin is None or vmax is None:
         vmax_abs = np.abs(gravity_field).max()
         vmin, vmax = -vmax_abs, vmax_abs
@@ -34,7 +32,6 @@ def visualize_gravity_field(gravity_field, title="Gravity Field",
     ax.set_xlabel('Longitude', fontsize=12)
     ax.set_ylabel('Latitude', fontsize=12)
 
-    # Add colorbar
     cbar = plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.set_label('Gravity Anomaly (mGal)', fontsize=12)
 
@@ -42,7 +39,6 @@ def visualize_gravity_field(gravity_field, title="Gravity Field",
 
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"Saved figure to {save_path}")
 
     plt.show()
     return fig
@@ -60,28 +56,22 @@ def compare_gravity_fields(original, reconstructed, difference=None,
         titles: List of titles for [original, reconstructed, difference]
         save_path: Path to save figure
     """
-    # Remove channel dimension if present
     if len(original.shape) == 3 and original.shape[-1] == 1:
         original = original[:, :, 0]
     if len(reconstructed.shape) == 3 and reconstructed.shape[-1] == 1:
         reconstructed = reconstructed[:, :, 0]
 
-    # Compute difference if not provided
     if difference is None:
         difference = reconstructed - original
 
-    # Default titles
     if titles is None:
         titles = ['Original', 'Reconstructed', 'Difference']
 
-    # Create figure with 3 subplots
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
-    # Symmetric colormap range
     vmax_abs = max(np.abs(original).max(), np.abs(reconstructed).max())
     vmin, vmax = -vmax_abs, vmax_abs
 
-    # Plot original
     im1 = axes[0].imshow(original, cmap='RdBu_r', origin='lower',
                         vmin=vmin, vmax=vmax, aspect='auto')
     axes[0].set_title(titles[0], fontsize=14, fontweight='bold')
@@ -89,7 +79,6 @@ def compare_gravity_fields(original, reconstructed, difference=None,
     axes[0].set_ylabel('Latitude')
     plt.colorbar(im1, ax=axes[0], fraction=0.046, pad=0.04)
 
-    # Plot reconstructed
     im2 = axes[1].imshow(reconstructed, cmap='RdBu_r', origin='lower',
                         vmin=vmin, vmax=vmax, aspect='auto')
     axes[1].set_title(titles[1], fontsize=14, fontweight='bold')
@@ -97,7 +86,6 @@ def compare_gravity_fields(original, reconstructed, difference=None,
     axes[1].set_ylabel('Latitude')
     plt.colorbar(im2, ax=axes[1], fraction=0.046, pad=0.04)
 
-    # Plot difference
     diff_max = np.abs(difference).max()
     im3 = axes[2].imshow(difference, cmap='RdBu_r', origin='lower',
                         vmin=-diff_max, vmax=diff_max, aspect='auto')
@@ -111,7 +99,6 @@ def compare_gravity_fields(original, reconstructed, difference=None,
 
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"Saved comparison to {save_path}")
 
     plt.show()
     return fig
@@ -127,7 +114,6 @@ def plot_training_history(history, save_path=None):
     """
     fig, axes = plt.subplots(2, 2, figsize=(15, 10))
 
-    # Loss
     axes[0, 0].plot(history.history['loss'], label='Train Loss', linewidth=2)
     axes[0, 0].plot(history.history['val_loss'], label='Val Loss', linewidth=2)
     axes[0, 0].set_xlabel('Epoch')
@@ -136,7 +122,6 @@ def plot_training_history(history, save_path=None):
     axes[0, 0].legend()
     axes[0, 0].grid(True, alpha=0.3)
 
-    # MAE
     if 'mae' in history.history:
         axes[0, 1].plot(history.history['mae'], label='Train MAE', linewidth=2)
         axes[0, 1].plot(history.history['val_mae'], label='Val MAE', linewidth=2)
@@ -146,7 +131,6 @@ def plot_training_history(history, save_path=None):
         axes[0, 1].legend()
         axes[0, 1].grid(True, alpha=0.3)
 
-    # Pearson correlation (if available from custom callback)
     if 'val_pearson' in history.history:
         axes[1, 0].plot(history.history['val_pearson'], label='Pearson r',
                        linewidth=2, color='green')
@@ -156,7 +140,6 @@ def plot_training_history(history, save_path=None):
         axes[1, 0].legend()
         axes[1, 0].grid(True, alpha=0.3)
 
-    # SSIM (if available)
     if 'val_ssim' in history.history:
         axes[1, 1].plot(history.history['val_ssim'], label='SSIM',
                        linewidth=2, color='purple')
@@ -170,7 +153,6 @@ def plot_training_history(history, save_path=None):
 
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"Saved training history to {save_path}")
 
     plt.show()
     return fig
@@ -190,17 +172,14 @@ def plot_power_spectrum_comparison(original, reconstructed, degrees=None,
     """
     from model_eval import power_spectrum_analysis
 
-    # Compute power spectra
     orig_spectrum = power_spectrum_analysis(original)
     recon_spectrum = power_spectrum_analysis(reconstructed)
 
-    # Create degree array if not provided
     if degrees is None:
         degrees = np.arange(len(orig_spectrum))
 
     fig, ax = plt.subplots(figsize=(12, 7))
 
-    # Plot on log scale
     ax.semilogy(degrees[:len(orig_spectrum)], orig_spectrum,
                label='Original', linewidth=2.5, alpha=0.8)
     ax.semilogy(degrees[:len(recon_spectrum)], recon_spectrum,
@@ -216,7 +195,6 @@ def plot_power_spectrum_comparison(original, reconstructed, degrees=None,
 
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"Saved power spectrum to {save_path}")
 
     plt.show()
     return fig
@@ -248,7 +226,6 @@ def visualize_patches(patches, num_samples=16, title="Sample Patches", save_path
         axes[i].axis('off')
         axes[i].set_title(f'Patch {i+1}', fontsize=9)
 
-    # Hide unused subplots
     for i in range(num_samples, len(axes)):
         axes[i].axis('off')
 
@@ -257,7 +234,6 @@ def visualize_patches(patches, num_samples=16, title="Sample Patches", save_path
 
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"Saved patch visualization to {save_path}")
 
     plt.show()
     return fig
@@ -275,21 +251,17 @@ def save_results(original, reconstructed, metrics, output_dir='results'):
     """
     os.makedirs(output_dir, exist_ok=True)
 
-    # Save arrays
     np.save(os.path.join(output_dir, 'original.npy'), original)
     np.save(os.path.join(output_dir, 'reconstructed.npy'), reconstructed)
     np.save(os.path.join(output_dir, 'difference.npy'), reconstructed - original)
 
-    # Save metrics to text file
     metrics_path = os.path.join(output_dir, 'metrics.txt')
     with open(metrics_path, 'w') as f:
         f.write("RECONSTRUCTION METRICS\n")
         f.write("=" * 50 + "\n\n")
         for key, value in metrics.items():
             f.write(f"{key}: {value}\n")
-    print(f"Saved metrics to {metrics_path}")
 
-    # Save visualizations
     compare_gravity_fields(
         original, reconstructed,
         save_path=os.path.join(output_dir, 'comparison.png')
@@ -299,8 +271,6 @@ def save_results(original, reconstructed, metrics, output_dir='results'):
         original, reconstructed,
         save_path=os.path.join(output_dir, 'power_spectrum.png')
     )
-
-    print(f"\nAll results saved to {output_dir}/")
 
 
 def calculate_degree_correlation(coeffs_true, coeffs_pred, max_degree=None):
@@ -324,17 +294,14 @@ def calculate_degree_correlation(coeffs_true, coeffs_pred, max_degree=None):
     correlations = []
 
     for degree in range(max_degree + 1):
-        # Extract coefficients for this degree
         c_true = C_true[degree, :degree+1]
-        s_true = S_true[degree, 1:degree+1]  # S_l0 = 0 by convention
+        s_true = S_true[degree, 1:degree+1]
         c_pred = C_pred[degree, :degree+1]
         s_pred = S_pred[degree, 1:degree+1]
 
-        # Combine C and S coefficients
         true_coeffs = np.concatenate([c_true, s_true])
         pred_coeffs = np.concatenate([c_pred, s_pred])
 
-        # Calculate correlation
         if len(true_coeffs) > 1 and np.std(true_coeffs) > 0 and np.std(pred_coeffs) > 0:
             corr = np.corrcoef(true_coeffs, pred_coeffs)[0, 1]
             correlations.append(corr)
@@ -378,25 +345,13 @@ def create_summary_report(metrics, history=None, output_path='summary_report.txt
 
         f.write("="*80 + "\n")
 
-    print(f"Summary report saved to {output_path}")
-
 
 if __name__ == "__main__":
-    # Test visualization functions with dummy data
-    print("Testing visualization utilities...")
-
-    # Create dummy gravity field
     dummy_field = np.random.randn(180, 360) * 100
-
-    print("\nTesting single field visualization...")
     visualize_gravity_field(dummy_field, title="Test Gravity Field")
 
-    print("\nTesting comparison visualization...")
     dummy_recon = dummy_field + np.random.randn(180, 360) * 10
     compare_gravity_fields(dummy_field, dummy_recon)
 
-    print("\nTesting patch visualization...")
     dummy_patches = np.random.randn(16, 30, 30, 1) * 50
     visualize_patches(dummy_patches, title="Test Patches")
-
-    print("\nAll visualization tests passed!")
