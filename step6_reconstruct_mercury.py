@@ -431,14 +431,14 @@ def main():
     
     plt.tight_layout()
     
-    # Save visualization as PNG
-    viz_path = f"{args.output_dir}/mercury_reconstruction_comparison_3.png"
+    # Save visualization as PDF
+    viz_path = f"{args.output_dir}/mercury_reconstruction_comparison.pdf"
     plt.savefig(viz_path, dpi=300, bbox_inches='tight')
     print(f"\nSaved visualization to {viz_path}")
     
     # Save raw data
-    np.save(f"{args.output_dir}/mercury_final_hybrid_map_3.npy", final_map)
-    print(f"Saved hybrid map to {args.output_dir}/mercury_final_hybrid_map_3.npy")
+    np.save(f"{args.output_dir}/mercury_final_hybrid_map.npy", final_map)
+    print(f"Saved hybrid map to {args.output_dir}/mercury_final_hybrid_map.npy")
 
 if __name__ == "__main__":
     main()

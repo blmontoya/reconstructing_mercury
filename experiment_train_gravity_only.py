@@ -12,7 +12,7 @@ from scipy.ndimage import zoom
 import time
 
 # Import the optimized model
-from model import create_gravity_only_model
+from moon_model import create_gravity_only_model
 
 
 def configure_tensorflow_for_cpu():

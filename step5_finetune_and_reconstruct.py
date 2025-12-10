@@ -11,11 +11,11 @@ from scipy.ndimage import zoom
 import time
 
 # IMPORT CUSTOM CLASSES (REQUIRED FOR LOADING)
-from model import GravityReconstructionNetwork, DEMRefiningNetwork
+from moon_model import GravityReconstructionNetwork, DEMRefiningNetwork
 
 # Import from existing scripts
 # (Ensure train_with_dem.py exists and has these functions, or copy them here)
-from train_with_dem import (
+from step3_train_moon_base import (
     configure_tensorflow_for_cpu,
     resize_grid_to_match,
     create_aligned_patches_with_dem,

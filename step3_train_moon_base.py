@@ -11,7 +11,7 @@ from scipy.ndimage import zoom
 import time
 
 # Import models
-from model import create_full_model, GravityReconstructionNetwork, DEMRefiningNetwork
+from moon_model import create_full_model, GravityReconstructionNetwork, DEMRefiningNetwork
 
 
 def configure_tensorflow_for_cpu():

@@ -74,26 +74,6 @@ def main():
     # Save DEM
     np.save(os.path.join(output_dir, "mercury_dem_720x360.npy"), global_dem)
     print(f"SAVED DEM: Range [{np.min(global_dem):.2f}, {np.max(global_dem):.2f}]")
-
-    # 2. GENERATE GRAVITY (Synthetic for Training)
-    print("\n--- Processing Gravity ---")
-    from scipy.ndimage import gaussian_filter
     
-    # High Res (L50) - Stays relatively sharp
-    grav_high = gaussian_filter(global_dem, sigma=2)
-    # Multiplier: 25 gives us a range roughly around -80 to +80
-    grav_high = (grav_high - np.mean(grav_high)) / (np.std(grav_high) + 1e-8) * 25
-    
-    np.save(os.path.join(output_dir, "mercury_grav_L50.npy"), grav_high)
-    print(f"SAVED L50: Range [{np.min(grav_high):.2f}, {np.max(grav_high):.2f}]")
-
-    # Low Res (L25) - MAKE THIS BLOBBY
-    # CHANGE: Increased sigma from 5 to 16. 
-    # This blurs out the craters and leaves only the large "blobs" like the real map.
-    grav_low = gaussian_filter(grav_high, sigma=16) 
-    
-    np.save(os.path.join(output_dir, "mercury_grav_L25.npy"), grav_low)
-    print(f"SAVED L25: Range [{np.min(grav_low):.2f}, {np.max(grav_low):.2f}]")
-
 if __name__ == "__main__":
     main()
