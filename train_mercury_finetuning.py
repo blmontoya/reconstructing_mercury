@@ -107,7 +107,7 @@ def finetune_mercury_model(
         gravity_high_north,     # <--- Passing sliced data
         dem_high_north,         # <--- Passing sliced data
         patch_size=30,
-        stride=8,
+        stride=5,
         augment=True 
     )
     
@@ -151,7 +151,7 @@ def finetune_mercury_model(
     print(f"\nRecompiling model for fine-tuning (LR: {initial_lr})...")
     model.compile(
         optimizer=keras.optimizers.Adam(learning_rate=initial_lr),
-        loss='mae',
+        loss='mse',
         metrics=['mae', 'mse']
     )
 
