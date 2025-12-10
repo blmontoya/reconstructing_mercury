@@ -72,7 +72,7 @@ def main():
 
     # --- PHASE 4: MERCURY FINE-TUNING ---
     # We fine-tune on the North Pole
-    if not run_step("step5_finetune_mercury.py", 
+    if not run_step("step5_finetune_and_reconstruct.py", 
                     "Step 5: Fine-Tune on Mercury North",
                     args="--epochs 50 --lr 1e-5"):
         return

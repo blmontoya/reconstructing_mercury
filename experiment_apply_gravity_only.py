@@ -13,7 +13,7 @@ import os
 from scipy.ndimage import zoom
 
 # Import custom layers for model loading
-from model import GravityReconstructionNetwork, DenseBlock
+from moon_model import GravityReconstructionNetwork, DenseBlock
 
 # Import evaluation metrics (optional - for validation if you have ground truth)
 try:

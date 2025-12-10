@@ -12,7 +12,7 @@ import os
 import argparse
 
 # Import custom layers just like in training
-from model import GravityReconstructionNetwork, DEMRefiningNetwork
+from moon_model import GravityReconstructionNetwork, DEMRefiningNetwork
 
 def load_model_safe(filepath):
     """Load model with custom objects"""
