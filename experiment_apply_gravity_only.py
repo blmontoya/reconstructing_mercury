@@ -122,7 +122,7 @@ def visualize_mercury_reconstruction(grid_low, grid_high_reconstructed, output_p
     lon_extent = [0, 360]
 
     fig, axes = plt.subplots(1, 2, figsize=(20, 8))
-    vmin, vmax = -75, 75
+    vmin, vmax = -150, 150
     im1 = axes[0].imshow(
         grid_low,
         cmap='RdBu_r',
@@ -162,7 +162,7 @@ def visualize_mercury_reconstruction(grid_low, grid_high_reconstructed, output_p
     plt.suptitle('Mercury Gravity Field Reconstruction\nTrained on Moon (GRAIL) → Applied to Mercury (MESSENGER)',
                 fontsize=16, fontweight='bold', y=0.98)
     plt.tight_layout()
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', format='pdf')
     plt.close()
 
     from scipy.ndimage import zoom as scipy_zoom
@@ -208,8 +208,8 @@ def visualize_mercury_reconstruction(grid_low, grid_high_reconstructed, output_p
                 fontsize=16, fontweight='bold', y=0.98)
     plt.tight_layout()
 
-    zoom_path = output_path.replace('.png', '_zoomed.png')
-    plt.savefig(zoom_path, dpi=300, bbox_inches='tight')
+    zoom_path = output_path.replace('.pdf', '_zoomed.pdf')  # Change extension
+    plt.savefig(zoom_path, dpi=300, bbox_inches='tight', format='pdf')
     plt.close()
 
 
@@ -292,8 +292,8 @@ def main():
     np.savez_compressed(output_npz, grid=reconstructed, lmax=200)
     print(f"      Saved data to {output_npz}")
 
-    output_png = f'{output_dir}/mercury_reconstruction.png'
-    visualize_mercury_reconstruction(grid_low_mercury, reconstructed, output_png)
+    output_pdf = f'{output_dir}/mercury_reconstruction.pdf'
+    visualize_mercury_reconstruction(grid_low_mercury, reconstructed, output_pdf)
 
     if METRICS_AVAILABLE:
         print(f"\n[BONUS] Running power spectrum analysis...")
@@ -312,7 +312,7 @@ def main():
     print("="*80)
     print(f"\nResults saved:")
     print(f"  - Reconstructed grid: {output_npz}")
-    print(f"  - Visualization:      {output_png}")
+    print(f"  - Visualization:      {output_pdf}")
     if METRICS_AVAILABLE:
         print(f"  - Power spectrum:     results/mercury_power_spectrum.png")
     print("\nYou can now view the PNG file to see the Mercury reconstruction!")

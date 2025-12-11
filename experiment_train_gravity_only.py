@@ -102,7 +102,7 @@ def train_moon_gravity_model(
     low_patches, high_patches = create_aligned_patches(
         grid_low, grid_high,
         patch_size=30,
-        stride=20,
+        stride=10,
         augment=True
     )
 
