@@ -1,10 +1,19 @@
 # Reconstructing Mercury's Southern Hemisphere Using CNNs
 
 <p align="center">
+  <img width="800" height="700" src=DL-Final-Project-Poster.png>
+</p>
+<p align="center">
+  Fig. 1. Project Poster
+  <br>
+  <a href="DL Final Project Poster.pptx-7.pdf"> View full poster (PDF)</a>
+</p>
+
+<p align="center">
   <img width="800" height="500" src=readme_imgs/mercury_gravity_field.png>
 </p>
 <p align="center">
-  Fig. 1. Map of Mercury's gravitational field prior to processing
+  Fig. 2. Map of Mercury's gravitational field prior to processing
 </p>
 
 ## Introduction:
